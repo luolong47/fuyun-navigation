@@ -1,43 +1,70 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
+  <q-page class="q-pa-md navigation-page">
+    <!-- 页面标题 -->
+    <div class="text-center q-mb-xl">
+      <h1 class="text-h4 text-weight-bold text-primary q-mb-md">
+        浮云导航
+      </h1>
+      <div class="text-h6 text-grey-6">
+        精选优质网站，让上网更便捷
+      </div>
+    </div>
+
+    <!-- 加载状态 -->
+    <div v-if="loading" class="row justify-center q-pa-xl">
+      <q-spinner-dots size="40px" color="primary" />
+    </div>
+
+    <!-- 导航内容 -->
+    <div v-else class="navigation-content">
+      <!-- 热门导航 -->
+      <PopularLinks />
+      
+      <!-- 分类导航 -->
+      <NavigationCard
+        v-for="category in categories"
+        :key="category.id"
+        :category="category"
+      />
+    </div>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import type { Todo, Meta } from 'components/models';
-import ExampleComponent from 'components/ExampleComponent.vue';
+import { onMounted, ref } from 'vue'
+import type { NavigationCategory } from '../types/navigation'
+import { NavigationService } from '../services/navigationService'
+import PopularLinks from '../components/PopularLinks.vue'
+import NavigationCard from '../components/NavigationCard.vue'
 
-const todos = ref<Todo[]>([
-  {
-    id: 1,
-    content: 'ct1',
-  },
-  {
-    id: 2,
-    content: 'ct2',
-  },
-  {
-    id: 3,
-    content: 'ct3',
-  },
-  {
-    id: 4,
-    content: 'ct4',
-  },
-  {
-    id: 5,
-    content: 'ct5',
-  },
-]);
+const categories = ref<NavigationCategory[]>([])
+const loading = ref(true)
 
-const meta = ref<Meta>({
-  totalCount: 1200,
-});
+onMounted(async () => {
+  try {
+    categories.value = await NavigationService.getActiveCategories()
+  } catch (error) {
+    console.error('获取导航分类失败:', error)
+  } finally {
+    loading.value = false
+  }
+})
 </script>
+
+<style lang="scss" scoped>
+.navigation-page {
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+.navigation-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+  .q-pa-md {
+    padding: 8px;
+  }
+}
+</style>
