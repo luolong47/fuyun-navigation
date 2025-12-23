@@ -1,0 +1,127 @@
+# 依赖目录
+node_modules/
+.pnpm-store/
+
+# 构建输出
+dist/
+build/
+.output/
+
+# 环境变量文件
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE 和编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# 日志文件
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 运行时数据
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# 覆盖率目录
+coverage/
+*.lcov
+
+# nyc 测试覆盖率
+.nyc_output/
+
+# TypeScript 缓存
+*.tsbuildinfo
+
+# ESLint 缓存
+.eslintcache
+
+# Prettier 缓存
+.prettiercache
+
+# Quasar 相关
+.quasar/
+dist/quasar-*
+
+# Vite 相关
+.vite/
+
+# 后端 Java/Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# IDE 文件
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Spring Boot
+application-local.properties
+application-dev.properties
+application-prod.properties
+
+# 日志
+log/
+*.log
+
+# 临时文件
+*.tmp
+*.temp
+
+# 备份文件
+*.bak
+*.backup
+
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+
+# 缓存
+.cache/
+.parcel-cache/
+
+# 热重载
+.hmr/
+
+# 锁文件（保留 pnpm-lock.yaml，忽略其他）
+package-lock.json
+yarn.lock
+
+# 本地配置文件
+config.local.*
+settings.local.*
+
+# 文档生成
+docs/generated/
+
+# 分析和性能报告
+bundle-analyzer/
+report/
+
+# 测试结果
+test-results/
+playwright-report/
+
+# 缓存目录
+.eslintcache
+.stylelintcache

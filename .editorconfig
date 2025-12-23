@@ -1,0 +1,95 @@
+# EditorConfig 配置文件
+# 浮云导航项目 - 统一代码风格配置
+#
+# 注意：配合 Git 全局配置使用
+# - Git 全局：core.autocrlf = input
+# - 项目 .gitattributes：统一使用 LF 行尾
+# - 编辑器会按此配置显示，但实际存储由 Git 控制
+
+# 根配置文件，表示这是最顶层的 EditorConfig 文件
+root = true
+
+# 默认全局配置
+[*]
+# 编码格式：统一使用 UTF-8
+charset = utf-8
+# 缩进方式：使用空格
+indent_style = space
+# 缩进大小：2 个空格（前端项目标准）
+indent_size = 2
+# 行尾：跨平台兼容，默认使用 LF
+end_of_line = lf
+# 在文件末尾插入新行
+insert_final_newline = true
+# 删除行尾空格
+trim_trailing_whitespace = true
+
+# Java 文件配置（后端）
+[*.java]
+# Java 标准缩进：4 个空格
+indent_size = 4
+# 行尾：统一使用 LF（与 Git 配置保持一致）
+end_of_line = lf
+
+# TypeScript 和 JavaScript 文件配置
+[*.{ts,js,mjs,cjs}]
+indent_size = 2
+
+# Vue 文件配置
+[*.vue]
+indent_size = 2
+
+# JSON 和 YAML 配置文件
+[*.{json,yml,yaml}]
+indent_size = 2
+
+# Markdown 文件配置
+[*.md]
+# Markdown 文件建议使用 2 个空格缩进
+indent_size = 2
+# 保留 Markdown 文件中的行尾空格（有时用于格式化）
+trim_trailing_whitespace = false
+
+# HTML 文件配置
+[*.html]
+indent_size = 2
+
+# CSS 和 SCSS 文件配置
+[*.{css,scss,sass,less}]
+indent_size = 2
+
+# XML 文件配置
+[*.xml]
+indent_size = 2
+
+# Maven 构建文件
+[pom.xml]
+indent_size = 2
+
+# Git 配置文件
+[.gitignore]
+indent_size = 2
+
+# EditorConfig 自身配置
+[.editorconfig]
+indent_size = 2
+
+# README 文件
+[README*]
+indent_size = 2
+
+# 配置文件
+[*.{config.js,config.ts}]
+indent_size = 2
+
+# 环境配置文件
+[.env*]
+indent_size = 2
+
+# 锁文件（通常不手动编辑，但保持一致性）
+[pnpm-lock.yaml]
+indent_size = 2
+
+# 特殊文件：package.json 使用 2 空格缩进（npm 标准）
+[package.json]
+indent_size = 2
