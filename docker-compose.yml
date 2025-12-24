@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  # MySQL数据库服务
+  mysql:
+    image: mysql:8.0
+    container_name: fuyun-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: fuyun123456
+      MYSQL_DATABASE: fuyun_navigation
+      MYSQL_USER: fuyun
+      MYSQL_PASSWORD: fuyun123456
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - fuyun-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # 应用服务（包含前后端）
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fuyun-app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      # 数据库配置
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/fuyun_navigation?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+      SPRING_DATASOURCE_USERNAME: fuyun
+      SPRING_DATASOURCE_PASSWORD: fuyun123456
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      
+      # JPA配置
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: false
+      
+      # OAuth2配置
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID:-Ov23liX6lQSrRtQUQqTG}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET:-b70681d08528c61efa5717172d1cdd64d26a38b8}
+      GITHUB_REDIRECT_URI: ${GITHUB_REDIRECT_URI:-http://localhost:8080/api/auth/github/callback}
+      
+      # JWT配置
+      JWT_SECRET: ${JWT_SECRET:-fuyun-navigation-jwt-secret-key-2024}
+      
+      # Spring Profile
+      SPRING_PROFILES_ACTIVE: prod
+      
+      # 时区设置
+      TZ: Asia/Shanghai
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - fuyun-network
+    volumes:
+      - app_logs:/app/logs
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Redis缓存服务（可选）
+  redis:
+    image: redis:7-alpine
+    container_name: fuyun-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --requirepass fuyun123456
+    volumes:
+      - redis_data:/data
+    networks:
+      - fuyun-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+# 数据卷定义
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+  app_logs:
+    driver: local
+
+# 网络定义
+networks:
+  fuyun-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

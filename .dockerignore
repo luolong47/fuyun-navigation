@@ -1,0 +1,69 @@
+# Git相关
+.git
+.gitignore
+.gitattributes
+
+# IDE相关
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 日志文件
+*.log
+logs/
+
+# 临时文件
+tmp/
+temp/
+
+# Node.js相关（除了前端构建阶段）
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 前端构建产物（会被Dockerfile重新构建）
+fuyun-front/dist/
+fuyun-front/.quasar/
+fuyun-front/node_modules/
+
+# Maven相关（除了后端构建阶段）
+fuyun-backend/target/
+fuyun-backend/.mvn/
+mvnw*
+.mvn/
+
+# 配置文件（敏感信息）
+.env
+.env.local
+.env.*.local
+application-*.yml
+application-*.yaml
+application-*.properties
+
+# 文档和说明
+README.md
+*.md
+docs/
+
+# Docker相关
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# 脚本文件
+*.sh
+*.bat
+*.cmd
+
+# 测试相关
+coverage/
+.nyc_output/
+test-results/

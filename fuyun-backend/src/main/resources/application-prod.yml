@@ -1,0 +1,79 @@
+spring:
+  application:
+    name: fuyun-backend
+  
+  # 生产环境数据库配置 - MySQL
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/fuyun_navigation?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai}
+    username: ${SPRING_DATASOURCE_USERNAME:fuyun}
+    password: ${SPRING_DATASOURCE_PASSWORD:fuyun123456}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:com.mysql.cj.jdbc.Driver}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  
+  # JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+    show-sql: ${SPRING_JPA_SHOW_SQL:false}
+    properties:
+      hibernate:
+        dialect: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.MySQL8Dialect}
+        format_sql: false
+        use_sql_comments: false
+  
+  # OAuth2配置
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ${GITHUB_CLIENT_ID:Ov23liX6lQSrRtQUQqTG}
+            client-secret: ${GITHUB_CLIENT_SECRET:b70681d08528c61efa5717172d1cdd64d26a38b8}
+            scope: user:email
+            redirect-uri: ${GITHUB_REDIRECT_URI:http://localhost:8080/api/auth/github/callback}
+
+# JWT配置
+jwt:
+  secret: ${JWT_SECRET:fuyun-navigation-jwt-secret-key-2024}
+  expiration: 86400000 # 24小时
+
+# 服务器配置
+server:
+  port: 8080
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.fuyun: INFO
+    org.springframework.web: INFO
+    org.hibernate.SQL: WARN
+  file:
+    name: /app/logs/fuyun-backend.log
+  logback:
+    rollingpolicy:
+      max-file-size: 100MB
+      max-history: 30
+      total-size-cap: 1GB
+
+# 管理端点配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+  health:
+    db:
+      enabled: true
