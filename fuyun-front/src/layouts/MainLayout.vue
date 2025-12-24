@@ -4,9 +4,9 @@
       <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title> Quasar App </q-toolbar-title>
+        <q-toolbar-title>浮云导航</q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <LoginButton />
       </q-toolbar>
     </q-header>
 
@@ -25,8 +25,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import EssentialLink, { type EssentialLinkProps } from 'components/EssentialLink.vue';
+import LoginButton from 'components/LoginButton.vue';
+import { useAuthStore } from 'stores/authStore';
+
+const authStore = useAuthStore();
+
+onMounted(() => {
+  void authStore.initializeAuth();
+});
 
 const linksList: EssentialLinkProps[] = [
   {

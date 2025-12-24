@@ -26,6 +26,22 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
         format_sql: false
+  
+  # OAuth2 配置
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ${GITHUB_CLIENT_ID:Ov23liX6lQSrRtQUQqTG}
+            client-secret: ${GITHUB_CLIENT_SECRET:b70681d08528c61efa5717172d1cdd64d26a38b8}
+            scope: user:email
+            redirect-uri: ${GITHUB_REDIRECT_URI:http://localhost:8080/api/auth/github/callback}
+
+# JWT 配置
+jwt:
+  secret: ${JWT_SECRET:fuyun-navigation-jwt-secret-key-2024}
+  expiration: 86400000 # 24小时
 
 # 服务器配置
 server:
